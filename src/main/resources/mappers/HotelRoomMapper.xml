@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suddenly.mapper.HotelRoomMapper">
+
+    <select id="queryByHotelId" parameterType="long" resultType="HotelRoom">
+        SELECT room_id, hotel_id, room_type, price, rooms, discount
+        FROM hotel_room
+        WHERE hotel_id = #{hotelId}
+    </select>
+
+    <select id="queryByroomId" parameterType="long" resultType="HotelRoom">
+        SELECT room_id, hotel_id, room_type, price, rooms, discount
+        FROM hotel_room
+        WHERE room_id = #{roomId}
+    </select>
+
+    <update id="update" parameterType="HotelRoom">
+        UPDATE hotel_room
+        <set>
+            <if test="roomType != null and roomType != ''">
+                room_type = #{roomType},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="rooms != null">
+                rooms = #{rooms},
+            </if>
+        </set>
+        WHERE hotel_id = #{hotelId}
+        AND room_id = #{roomId}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM hotel_room WHERE room_id = #{roomId}
+    </delete>
+
+    <insert id="insert" parameterType="HotelRoom">
+        INSERT INTO hotel_room
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="hotelId != null">
+                hotel_id,
+            </if>
+            <if test="roomType != null and roomType != ''">
+                room_type,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="rooms != null">
+                rooms,
+            </if>
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            <if test="hotelId != null">
+                #{hotelId},
+            </if>
+            <if test="roomType != null and roomType != ''">
+                #{roomType},
+            </if>
+            <if test="price != null">
+                #{price},
+            </if>
+            <if test="rooms != null">
+                #{rooms},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

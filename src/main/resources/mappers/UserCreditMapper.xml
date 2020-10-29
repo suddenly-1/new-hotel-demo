@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suddenly.mapper.UserCreditMapper">
+
+    <sql id="Base_Column_List">
+        id, user_id, time, order_number, action, credit_change, credit_result
+    </sql>
+
+    <select id="queryList" parameterType="long" resultType="UserCredit">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM user_credit
+        WHERE user_id = #{userId}
+    </select>
+
+    <insert id="insert" parameterType="UserCredit">
+        INSERT INTO user_credit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="time != null">
+                time,
+            </if>
+            <if test="orderNumber != null and orderNumber != ''">
+                order_number,
+            </if>
+            <if test="action != null and action != ''">
+                action,
+            </if>
+            <if test="creditChange != null and creditChange != ''">
+                credit_change,
+            </if>
+            <if test="creditResult != null">
+                credit_result,
+            </if>
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="time != null">
+                #{time},
+            </if>
+            <if test="orderNumber != null and orderNumber != ''">
+                #{orderNumber},
+            </if>
+            <if test="action != null and action != ''">
+                #{action},
+            </if>
+            <if test="creditChange != null and creditChange != ''">
+                #{creditChange},
+            </if>
+            <if test="creditResult != null">
+                #{creditResult},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

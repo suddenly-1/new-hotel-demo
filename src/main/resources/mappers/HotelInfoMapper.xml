@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suddenly.mapper.HotelInfoMapper">
+    
+    
+    
+    <resultMap id="hotelMap" type="com.suddenly.entity.response.HotelInfoVo">
+        <id property="id" column="id"/>
+        <result property="hotelName" column="hotel_name"/>
+        <result property="address" column="address"/>
+        <result property="businessDistrict" column="business_district"/>
+        <result property="introduction" column="introduction"/>
+        <result property="facilities" column="facilities"/>
+        <result property="star" column="star"/>
+        <result property="score" column="score"/>
+        <collection property="hotelRoomVoList"
+                    ofType="com.suddenly.entity.response.HotelRoomVo"
+                    javaType="java.util.List"
+                    select="queryRoomInfoList"
+                    column="{hotelId=id,startDate=startTime,endDate=endTime,minPrice=minPrice,maxPrice=maxPrice,roomType=roomType,roomQuantity=roomQuantity}">
+            <id property="roomId" column="room_id"/>
+            <result property="hotelId" column="hotel_id"/>
+            <result property="roomType" column="room_type"/>
+            <result property="price" column="price"/>
+            <result property="rooms" column="rooms"/>
+            <result property="remainingRoomQuantity" column="remaining_room_quantity"/>
+            <result property="roomStatus" column="room_status"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryRoomInfoList" resultType="map">
+        SELECT h.hotel_id, h.room_id, h.room_type,h.rooms,
+        IF(SUM(o.rooms) >= h.rooms, '满房', '有空房') room_status,
+        IF(SUM(o.rooms) >= h.rooms, 0, h.rooms-SUM(o.rooms)) remaining_room_quantity,
+        MIN(h.price) lowestPrice
+        FROM hotel_room AS h
+        LEFT JOIN order_info AS o
+        ON h.room_id = o.room_id
+        AND h.room_type = o.room_type
+        <where>
+            <if test="startDate != null">
+                AND o.start_date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND o.end_date &lt;= #{endDate}
+            </if>
+        </where>
+        GROUP BY h.room_id
+        <trim prefix="having" prefixOverrides="and">
+            <if test="hotelId != null">
+                AND h.hotel_id = #{hotelId}
+            </if>
+            <if test="minPrice != null and minPrice != '' and maxPrice != null and maxPrice != ''">
+                AND lowestPrice BETWEEN #{minPrice} AND #{maxPrice}
+            </if>
+            <if test="roomType != null and roomType != ''">
+                AND h.room_type = #{roomType}
+            </if>
+            <if test="roomQuantity != null and roomQuantity != ''">
+                AND remaining_room_quantity &gt;= #{roomQuantity}
+            </if>
+        </trim>
+        UNION
+        SELECT h.hotel_id, h.room_id, h.room_type,h.rooms,
+        '有空房' room_status,
+        h.rooms remaining_room_quantity,
+        MIN(h.price) lowestPrice
+        FROM hotel_room AS h
+        LEFT JOIN order_info AS o
+        ON h.room_id != o.room_id
+        <where>
+            <if test="startDate != null">
+                AND o.start_date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND o.end_date &lt;= #{endDate}
+            </if>
+        </where>
+        GROUP BY h.room_id
+        <trim prefix="having" prefixOverrides="and">
+            <if test="hotelId != null">
+                AND h.hotel_id = #{hotelId}
+            </if>
+            <if test="minPrice != null and minPrice != '' and maxPrice != null and maxPrice != ''">
+                AND lowestPrice BETWEEN #{minPrice} AND #{maxPrice}
+            </if>
+            <if test="roomType != null and roomType != ''">
+                AND h.room_type = #{roomType}
+            </if>
+            <if test="roomQuantity != null and roomQuantity != ''">
+                AND remaining_room_quantity &gt;= #{roomQuantity}
+            </if>
+        </trim>
+    </select>
+
+    <select id="queryAllList" parameterType="com.suddenly.entity.request.HotelInfoDto" resultMap="hotelMap">
+        SELECT id, hotel_name, address, business_district, introduction, facilities, star, score,
+        case when ('${startTime}' IS NULL) then NULL else '${startTime}' end as startTime,
+        case when ('${endTime}' IS NULL) then NULL else '${endTime}' end as endTime,
+        case when ('${minPrice}' IS NULL) then NULL else '${minPrice}' end as minPrice,
+        case when ('${maxPrice}' IS NULL) then NULL else '${maxPrice}' end as maxPrice,
+        case when ('${roomType}' IS NULL) then NULL else '${roomType}' end as roomType,
+        case when ('${roomQuantity}' IS NULL) then NULL else '${roomQuantity}' end as roomQuantity
+        FROM hotel_info
+        <where>
+            <if test="address != null and address != ''">
+                AND address = #{address}
+            </if>
+            <if test="businessDistrict != null and businessDistrict != ''">
+                AND business_district LIKE CONCAT('%',#{businessDistrict},'%')
+            </if>
+            <if test="hotelName != null and hotelName != ''">
+                AND hotel_name LIKE CONCAT('%',#{hotelName},'%')
+            </if>
+            <if test="star != null">
+                AND star = #{star}
+            </if>
+            <if test="maxScore != null and minScore != null">
+                AND score BETWEEN #{minScore} AND #{maxScore}
+            </if>
+        </where>
+    </select>
+
+
+
+
+
+
+    <select id="queryById" parameterType="long" resultType="HotelInfo">
+        SELECT id, hotel_name, address, business_district, introduction, facilities, star, score, price
+        FROM hotel_info
+        WHERE id = #{id}
+    </select>
+
+    <select id="queryBookedHotel" resultType="HotelInfo">
+        SELECT h.id, h.hotel_name, h.address, h.business_district, h.introduction, h.facilities, h.star, h.score, h.price
+        FROM order_info AS o
+        LEFT JOIN hotel_info AS h
+        ON h.id = o.hotel_id
+        WHERE o.user_id = #{userId}
+		GROUP BY h.id
+    </select>
+
+    <update id="updateHotel" parameterType="HotelInfo">
+        UPDATE hotel_info
+        <set>
+            <if test="hotelName != null and hotelName != ''">
+                hotelName = #{hotel_name},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="businessDistrict != null and businessDistrict != ''">
+                business_district = #{businessDistrict},
+            </if>
+            <if test="introduction != null and introduction != ''">
+                introduction = #{introduction},
+            </if>
+            <if test="facilities != null and facilities != ''">
+                facilities = #{facilities},
+            </if>
+            <if test="star != null">
+                star = #{star},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="queryAll" resultType="HotelInfoVo">
+        SELECT id, hotel_name, address, business_district, introduction, facilities, star, score, price
+        FROM hotel_info
+    </select>
+
+</mapper>

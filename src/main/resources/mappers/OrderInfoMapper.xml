@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suddenly.mapper.OrderInfoMapper">
+
+    <sql id="Base_Column_List">
+        id, order_number, phone, user_name, user_id, hotel_id, room_id, room_number, hotel_name, generation_date, start_date, end_date, latest_date, actual_checkin_time, actual_time, room_type, rooms, number, child, status, amount, score, comment, revocation_time
+    </sql>
+
+    <select id="queryByOrderNumber" parameterType="string" resultType="OrderInfo">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM order_info
+        WHERE order_number = #{orderNumber}
+    </select>
+
+    <select id="query" parameterType="OrderInfo" resultType="OrderInfo">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM order_info
+        <where>
+            1 = 1
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="orderNumber != null and orderNumber != ''">
+                AND order_number = #{orderNumber}
+            </if>
+            <if test="phone != null and phone != ''">
+                AND phone = #{phone}
+            </if>
+            <if test="userName != null and userName != ''">
+                AND user_name = #{userName}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="hotelId != null">
+                AND hotel_id = #{hotelId}
+            </if>
+            <if test="roomId != null">
+                AND room_id = #{roomId}
+            </if>
+            <if test="roomNumber != null and roomNumber != ''">
+                AND room_number = #{roomNumber}
+            </if>
+            <if test="hotelName != null and hotelName != ''">
+                AND hotel_name = #{hotelName}
+            </if>
+            <if test="generationDate != null">
+                AND generation_date = #{generationDate}
+            </if>
+            <if test="startDate != null">
+                AND start_date = #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND end_date = #{endDate}
+            </if>
+            <if test="latestDate != null">
+                AND latest_date = #{latestDate}
+            </if>
+            <if test="actualCheckinTime != null">
+                AND actual_checkin_time = #{actualCheckinTime}
+            </if>
+            <if test="actualTime != null">
+                AND actual_time = #{actualTime}
+            </if>
+            <if test="roomType != null and roomType != ''">
+                AND room_type = #{roomType}
+            </if>
+            <if test="rooms != null">
+                AND rooms = #{rooms}
+            </if>
+            <if test="number != null">
+                AND number = #{number}
+            </if>
+            <if test="child != null">
+                AND child = #{child}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+            <if test="amount != null">
+                AND amount = #{amount}
+            </if>
+            <if test="score != null">
+                AND score = #{score}
+            </if>
+            <if test="comment != null and comment != ''">
+                AND comment = #{comment}
+            </if>
+            <if test="revocationTime != null">
+                AND revocation_time = #{revocationTime}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="OrderInfo">
+        INSERT INTO order_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNumber != null and orderNumber != ''">
+                order_number,
+            </if>
+            <if test="phone != null and phone != ''">
+                phone,
+            </if>
+            <if test="userName != null and userName != ''">
+                user_name,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="hotelId != null">
+                hotel_id,
+            </if>
+            <if test="roomId != null">
+                room_id,
+            </if>
+            <if test="roomNumber != null and roomNumber != ''">
+                room_number,
+            </if>
+            <if test="hotelName != null and hotelName != ''">
+                hotel_name,
+            </if>
+            <if test="generationDate != null">
+                generation_date,
+            </if>
+            <if test="startDate != null">
+                start_date,
+            </if>
+            <if test="endDate != null">
+                end_date,
+            </if>
+            <if test="latestDate != null">
+                latest_date,
+            </if>
+            <if test="actualCheckinTime != null">
+                actual_checkin_time,
+            </if>
+            <if test="actualTime != null">
+                actual_time,
+            </if>
+            <if test="roomType != null and roomType != ''">
+                room_type,
+            </if>
+            <if test="rooms != null">
+                rooms,
+            </if>
+            <if test="number != null">
+                number,
+            </if>
+            <if test="child != null">
+                child,
+            </if>
+            <if test="status != null and status != ''">
+                status,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
+            <if test="comment != null and comment != ''">
+                comment,
+            </if>
+            <if test="revocationTime != null">
+                revocation_time,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="orderNumber != null and orderNumber != ''">
+                #{orderNumber},
+            </if>
+            <if test="phone != null and phone != ''">
+                #{phone},
+            </if>
+            <if test="userName != null and userName != ''">
+                #{userName},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="hotelId != null">
+                #{hotelId},
+            </if>
+            <if test="roomId != null">
+                #{roomId},
+            </if>
+            <if test="roomNumber != null and roomNumber != ''">
+                #{roomNumber},
+            </if>
+            <if test="hotelName != null and hotelName != ''">
+                #{hotelName},
+            </if>
+            <if test="generationDate != null">
+                #{generationDate},
+            </if>
+            <if test="startDate != null">
+                #{startDate},
+            </if>
+            <if test="endDate != null">
+                #{endDate},
+            </if>
+            <if test="latestDate != null">
+                #{latestDate},
+            </if>
+            <if test="actualCheckinTime != null">
+                #{actualCheckinTime},
+            </if>
+            <if test="actualTime != null">
+                #{actualTime},
+            </if>
+            <if test="roomType != null and roomType != ''">
+                #{roomType},
+            </if>
+            <if test="rooms != null">
+                #{rooms},
+            </if>
+            <if test="number != null">
+                #{number},
+            </if>
+            <if test="child != null">
+                #{child},
+            </if>
+            <if test="status != null and status != ''">
+                #{status},
+            </if>
+            <if test="amount != null">
+                #{amount},
+            </if>
+            <if test="score != null">
+                #{score},
+            </if>
+            <if test="comment != null and comment != ''">
+                #{comment},
+            </if>
+            <if test="revocationTime != null">
+                #{revocationTime},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="OrderInfo">
+        UPDATE order_info
+        <set>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="hotelId != null">
+                hotel_id = #{hotelId},
+            </if>
+            <if test="roomId != null">
+                room_id = #{roomId},
+            </if>
+            <if test="roomNumber != null and roomNumber != ''">
+                room_number = #{roomNumber},
+            </if>
+            <if test="hotelName != null and hotelName != ''">
+                hotel_name = #{hotelName},
+            </if>
+            <if test="generationDate != null">
+                generation_date = #{generationDate},
+            </if>
+            <if test="startDate != null">
+                start_date = #{startDate},
+            </if>
+            <if test="endDate != null">
+                end_date = #{endDate},
+            </if>
+            <if test="latestDate != null">
+                latest_date = #{latestDate},
+            </if>
+            <if test="actualCheckinTime != null">
+                actual_checkin_time = #{actualCheckinTime},
+            </if>
+            <if test="actualTime != null">
+                actual_time = #{actualTime},
+            </if>
+            <if test="roomType != null and roomType != ''">
+                room_type = #{roomType},
+            </if>
+            <if test="rooms != null">
+                rooms = #{rooms},
+            </if>
+            <if test="number != null">
+                number = #{number},
+            </if>
+            <if test="child != null">
+                child = #{child},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+            <if test="score != null">
+                score = #{score},
+            </if>
+            <if test="comment != null and comment != ''">
+                comment = #{comment},
+            </if>
+            <if test="revocationTime != null">
+                revocation_time = #{revocationTime},
+            </if>
+        </set>
+        WHERE order_number = #{orderNumber}
+    </update>
+
+    <select id="queryOrderCount" resultType="map">
+        SELECT COUNT(*) AS quantity
+        FROM order_info
+        WHERE `status` = #{status}
+        AND user_id = #{userId}
+        AND hotel_id = #{hotelId}
+    </select>
+
+    <select id="queryThatDay" parameterType="string" resultType="OrderInfo">
+        SELECT 
+        <include refid="Base_Column_List"></include>
+        FROM order_info 
+        WHERE `status` = #{status}
+        AND start_date = CONCAT(CURDATE(),' 14:00:00') 
+        AND end_date = CONCAT(DATE_SUB(CURDATE(),INTERVAL -1 DAY),' 12:00:00')
+    </select>
+
+</mapper>

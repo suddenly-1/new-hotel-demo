@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suddenly.mapper.UserInfoMapper">
+
+    <sql id="Base_Column_List">
+        id, user_name, account_number, password, phone, credit, vip, user_type, birthday, company_name, hotel_id
+    </sql>
+
+    <select id="queryByAccount" parameterType="string" resultType="UserInfo">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM user_info
+        WHERE account_number = #{account}
+    </select>
+
+    <select id="queryById" parameterType="long" resultType="UserInfo">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM user_info
+        WHERE id = #{id}
+    </select>
+
+    <select id="query" parameterType="UserInfo" resultType="UserInfo">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM user_info
+        <where>
+            1 = 1
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="userName != null and userName != ''">
+                AND user_name = #{userName}
+            </if>
+            <if test="accountNumber != null and accountNumber != ''">
+                AND account_number = #{accountNumber}
+            </if>
+            <if test="password != null and password != ''">
+                AND password = #{password}
+            </if>
+            <if test="phone != null and phone != ''">
+                AND phone = #{phone}
+            </if>
+            <if test="credit != null">
+                AND credit = #{credit}
+            </if>
+            <if test="vip != null and vip != ''">
+                AND vip = #{vip}
+            </if>
+            <if test="userType != null and userType != ''">
+                AND user_type = #{userType}
+            </if>
+            <if test="birthday != null">
+                AND birthday = #{birthday}
+            </if>
+            <if test="companyName != null and companyName != ''">
+                AND company_name = #{companyName}
+            </if>
+            <if test="hotelId != null">
+                AND hotel_id = #{hotelId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="addUserInfo" parameterType="UserInfo">
+        INSERT INTO user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName != null and userName != ''">
+                user_name,
+            </if>
+            <if test="accountNumber != null and accountNumber != ''">
+                account_number,
+            </if>
+            <if test="password != null and password != ''">
+                password,
+            </if>
+            <if test="phone != null and phone != ''">
+                phone,
+            </if>
+            <if test="credit != null">
+                credit,
+            </if>
+            <if test="vip != null and vip != ''">
+                vip,
+            </if>
+            <if test="userType != null and userType != ''">
+                user_type,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="companyName != null and companyName != ''">
+                company_name,
+            </if>
+            <if test="hotelId != null">
+                hotel_id,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="userName != null and userName != ''">
+                #{userName},
+            </if>
+            <if test="accountNumber != null and accountNumber != ''">
+                #{accountNumber},
+            </if>
+            <if test="password != null and password != ''">
+                #{password},
+            </if>
+            <if test="phone != null and phone != ''">
+                #{phone},
+            </if>
+            <if test="credit != null">
+                #{credit},
+            </if>
+            <if test="vip != null and vip != ''">
+                #{vip},
+            </if>
+            <if test="userType != null and userType != ''">
+                #{userType},
+            </if>
+            <if test="birthday != null">
+                #{birthday},
+            </if>
+            <if test="companyName != null and companyName != ''">
+                #{companyName},
+            </if>
+            <if test="hotelId != null">
+                #{hotelId},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateUserInfo" parameterType="UserInfo">
+        UPDATE user_info
+        <set>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="accountNumber != null and accountNumber != ''">
+                account_number = #{accountNumber},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="credit != null">
+                credit = #{credit},
+            </if>
+            <if test="vip != null and vip != ''">
+                vip = #{vip},
+            </if>
+            <if test="userType != null and userType != ''">
+                user_type = #{userType},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="companyName != null and companyName != ''">
+                company_name = #{companyName},
+            </if>
+            <if test="hotelId != null">
+                hotel_id = #{hotelId},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM user_info WHERE id = #{id}
+    </delete>
+
+    <select id="queryHotelStaff" parameterType="long" resultType="UserInfo">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM user_info
+        WHERE hotel_id = #{hotelId}
+        AND user_type = "hotel_staff"
+    </select>
+
+</mapper>
