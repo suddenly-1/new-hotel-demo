@@ -85,8 +85,9 @@ public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
 
 
     private void writeResponse(ResponseResult<?> result, HttpServletResponse response) {
-        if (result == null)
+        if (result == null) {
             return;
+        }
         String resJson = JSON.toJSONString(result);
         PrintWriter writer = null;
         response.setCharacterEncoding("UTF-8");
@@ -97,8 +98,9 @@ public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
         } catch (IOException e) {
             logger.error("拦截器返回结果失败", e);
         } finally {
-            if (writer != null)
+            if (writer != null) {
                 writer.close();
+            }
         }
     }
 

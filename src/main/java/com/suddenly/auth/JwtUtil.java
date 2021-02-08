@@ -52,8 +52,9 @@ public class JwtUtil {
                 throw new CustomizeException(TOKEN_PARSE_FAILURE);
             }
             return claims;
-        } else
+        } else {
             return null;
+        }
     }
 
 

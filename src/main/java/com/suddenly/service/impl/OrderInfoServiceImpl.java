@@ -153,6 +153,7 @@ public class OrderInfoServiceImpl implements OrderInfoService {
         }
     }
 
+    @SuppressWarnings("AlibabaAvoidNewDateGetTime")
     @Override
     public Boolean revoke(String orderNumber, Integer status) throws CustomizeException {
         try {
@@ -309,7 +310,7 @@ public class OrderInfoServiceImpl implements OrderInfoService {
 
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Boolean carryOutOrder(String orderNumber, Integer status) throws CustomizeException {
         try {
             Map<Integer, String> orderStatusMap = OrderStatusEnum.getOrderStatusMap();

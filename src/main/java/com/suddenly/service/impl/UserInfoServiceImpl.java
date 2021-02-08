@@ -98,7 +98,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 List<UserInfo> userInfos = userInfoMapper.queryHotelStaff(userInfoDto.getHotelId());
                 HotelInfo hotelInfo = hotelInfoMapper.queryById(userInfoDto.getHotelId());
                 userInfos.stream().forEach(userInfo -> {
-                    if (userInfo.getHotelId() == hotelInfo.getId()) {
+                    if (userInfo.getHotelId().equals(hotelInfo.getId())) {
                         throw new CustomizeException(ResultEnum.HOTEL_STAFF_EXISTED);
                     }
                 });

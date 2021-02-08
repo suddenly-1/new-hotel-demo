@@ -1,12 +1,8 @@
 package com.suddenly.service.impl;
 
-import com.suddenly.service.AutoLoginService;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
 import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
@@ -22,12 +18,12 @@ class AutoLoginServiceImplTest {
     @Test
     public void test() {
 
-//        Jedis jedis = new Jedis("192.168.180.129", 6379);
-//        jedis.auth("123456");
-//        System.out.println(jedis.ping());
+        Jedis jedis = new Jedis("101.133.174.185", 6379);
+        jedis.auth("98100815");
+        System.out.println(jedis.ping());
 
-        redisTemplate.opsForValue().set("key3", "word");
-        System.out.println(redisTemplate.opsForValue().get("key3"));
+        redisTemplate.opsForValue().set("key1", "test");
+        System.out.println(redisTemplate.opsForValue().get("key1"));
 
 
     }

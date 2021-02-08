@@ -19,6 +19,7 @@ public class ShiroRealm extends AuthorizingRealm {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
+    @Override
     public void setName(String name) {
         super.setName("ShiroRealm");
     }
